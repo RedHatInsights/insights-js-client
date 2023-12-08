@@ -9,9 +9,7 @@ RUN dnf install -y dnf-plugins-core rpm-build libicu-devel python-unversioned-co
 
 FROM common as builder
 ARG BRANCH=stream-nodejs-20-rhel-9.3.0
-ARG NODEJS_VERSION=20
 RUN dnf install -y git centpkg && \
-  dnf module enable -y nodejs:$NODEJS_VERSION && \
   dnf clean -y all && \
   cd /tmp && \
   git clone https://gitlab.com/redhat/centos-stream/rpms/nodejs.git -b $BRANCH && \
