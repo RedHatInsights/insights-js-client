@@ -22,6 +22,8 @@ on:
   pull_request:
   push:
     branches: [master]
+  schedule:
+    - cron: '0 0 * * *'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -55,4 +57,5 @@ jobs:
     with:
       centos_stream_version: ${{ matrix.centos_stream_version }}
       nodejs_version: ${{ matrix.nodejs_version }}
+      restore_ccache: ${{ github.event_name != 'schedule' }}
     secrets: inherit

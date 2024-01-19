@@ -13,6 +13,10 @@ on:
         default: "20"
         type: string
         required: true
+      restore_ccache:
+        default: true
+        required: true
+        type: boolean
 
 jobs:
   build-rpms:
@@ -27,6 +31,7 @@ jobs:
           key: centos-stream-${{ inputs.centos_stream_version }}-nodejs-${{ inputs.nodejs_version }}-${{ github.base_ref || github.ref_name }}
           restore-keys: |
             centos-stream-${{ inputs.centos_stream_version }}-nodejs-${{ inputs.nodejs_version }}-${{ github.base_ref || github.ref_name }}
+          restore: ${{ inputs.restore_ccache }}
           save: ${{ github.event.number == '' }}
       - name: Build container insights-js-client-builder:nodejs-${{ inputs.nodejs_version}}.el${{ inputs.centos_stream_version }}
         run: ./scripts/buildcontainer.sh "${{ inputs.centos_stream_version }}" "${{ inputs.nodejs_version }}"
