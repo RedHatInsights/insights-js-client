@@ -35,6 +35,13 @@ jobs:
           save: ${{ github.event.number == '' }}
       - name: Build container insights-js-client-builder:nodejs-${{ inputs.nodejs_version}}.el${{ inputs.centos_stream_version }}
         run: ./scripts/buildcontainer.sh "${{ inputs.centos_stream_version }}" "${{ inputs.nodejs_version }}"
+      - name: Free up enough space for the build
+        run: |
+          df -h
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          df -h
       - name: Rebuild nodejs RPMs
         run: |
           mkdir rpmbuild
