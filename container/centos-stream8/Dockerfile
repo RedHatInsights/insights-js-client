@@ -2,7 +2,9 @@
 
 # "common" takes no build args so it can be cached between different variants.
 FROM quay.io/centos/centos:stream8 as common
-RUN dnf install -y dnf-plugins-core rpm-build libicu-devel && \
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
+  sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* && \
+  dnf install -y dnf-plugins-core rpm-build libicu-devel && \
   dnf config-manager -y --set-enabled powertools && \
   dnf install -y epel-release epel-next-release && \
   dnf clean -y all

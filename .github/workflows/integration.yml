@@ -64,6 +64,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
+      - name: Patch for archived CentOS Stream 8
+        if: ${{ inputs.centos_stream_version == '8' }}
+        run: |
+          sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+          sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
       - uses: actions/download-artifact@v4
         with:
           name: rpms-nodejs${{ inputs.nodejs_version }}.el${{ inputs.centos_stream_version }}
